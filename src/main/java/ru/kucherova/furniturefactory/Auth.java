@@ -141,6 +141,8 @@ public class Auth extends Application {
                     throw new RuntimeException(e);
                 }
                 ClientController clientController = new ClientController(client, clientScene);
+
+                mainWindow.close();
 //
 //                С
 //
