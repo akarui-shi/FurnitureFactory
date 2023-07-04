@@ -2,6 +2,7 @@ package ru.kucherova.furniturefactory.model;
 
 import ru.kucherova.furniturefactory.database.DataBase;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,7 +28,7 @@ public class Store {
         ResultSet componentResult = statement.executeQuery(componentQuery);
         List<String> componentItems = new ArrayList<>();
         while (componentResult.next()) {
-            String componentName = componentResult.getString("name");
+            String componentName = componentResult.getString("address");
             componentItems.add(componentName);
         }
         statement.close();
@@ -63,6 +64,32 @@ public class Store {
         Statement statement = dataBase.connection.createStatement();
         String furnitureQuery = "DELETE FROM Furniture WHERE type = 'Chair';";
         int rowsAffected = statement.executeUpdate(furnitureQuery);
+    }
+
+    public List<String> getItemDataFromDatabase(DataBase dataBase,  String type) throws SQLException {
+
+        // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
+        String query = "SELECT name, fax_number FROM Store WHERE address = \"" + type + "\"";
+
+        PreparedStatement statement = dataBase.connection.prepareStatement(query);
+        //statement.setString(1, this.toString() );
+
+        ResultSet resultSet = statement.executeQuery();
+
+        List<String> data = new ArrayList<>();
+        while (resultSet.next()) {
+            String name = resultSet.getString("name");
+            String fax_number = resultSet.getString("fax_number");
+            data.add(name);
+            data.add(fax_number);
+        }
+
+        System.out.println(data);
+
+        resultSet.close();
+        statement.close();
+
+        return data;
     }
 
 

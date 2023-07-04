@@ -75,36 +75,26 @@ public class Line {
         int rowsAffected = statement.executeUpdate(furnitureQuery);
     }
 
-    public List<String>  getItemDataFromDatabase(DataBase dataBase) throws SQLException {
+    public List<String> getItemDataFromDatabase(DataBase dataBase,  String type) throws SQLException {
 
         // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
-        String query = "SELECT Component.type AS component, Line.name AS line, Order.date, Store.address " +
-                "FROM Furniture " +
-                "JOIN Line ON Furniture.line_id = Line.id " +
-                "JOIN FurnitureComponent ON Furniture.id = FurnitureComponent.furniture_id " +
-                "JOIN Component ON FurnitureComponent.component_id = Component.id " +
-                "JOIN OrderFurniture ON Furniture.id = OrderFurniture.furniture_id " +
-                "JOIN `Order` ON OrderFurniture.order_id = `Order`.id " +
-                "JOIN Store ON `Order`.store_id = Store.id " +
-                "WHERE Furniture.type =" + this;
+        String query = "SELECT Furniture.type\n" +
+                "FROM Furniture\n" +
+                "INNER JOIN Line ON Furniture.line_id = Line.id\n" +
+                "WHERE Line.name = \"" + type + "\"";
 
         PreparedStatement statement = dataBase.connection.prepareStatement(query);
-        statement.setString(1, this.toString() );
+        //statement.setString(1, this.toString() );
 
         ResultSet resultSet = statement.executeQuery();
 
         List<String> data = new ArrayList<>();
-        if (resultSet.next()) {
-            String component = resultSet.getString("component");
-            String line = resultSet.getString("line");
-            String order = resultSet.getString("date");
-            String shop = resultSet.getString("address");
-
-            data.add(component);
-            data.add(line);
-            data.add(order);
-            data.add(shop);
+        while (resultSet.next()) {
+            String furniture = resultSet.getString("type");
+            data.add(furniture);
         }
+
+        System.out.println(data);
 
         resultSet.close();
         statement.close();
