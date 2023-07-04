@@ -1,4 +1,4 @@
 package ru.kucherova.furniturefactory.controller;
 
-public class Client {
+public class FurnitureController {
 }

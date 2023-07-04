@@ -14,10 +14,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import org.controlsfx.control.PropertySheet;
 
-import ru.kucherova.furniturefactory.database.DataBase;
-import ru.kucherova.furniturefactory.view.Guest;
+import ru.kucherova.furniturefactory.controller.ClientController;
+import ru.kucherova.furniturefactory.controller.GuestController;
+
+import ru.kucherova.furniturefactory.model.Client;
+import ru.kucherova.furniturefactory.model.Guest;
+
+import ru.kucherova.furniturefactory.view.ClientScene;
+import ru.kucherova.furniturefactory.view.GuestScene;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class Auth extends Application {
@@ -61,17 +70,33 @@ public class Auth extends Application {
         guestButton.setStyle("-fx-background-color: #F5F5F5; -fx-text-fill: #2F4F4F;");
         guestButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                Guest guest = new Guest();
+            public void handle(ActionEvent event)  {
+                Guest guest = null;
                 try {
-                    guest.start(mainWindow);
+                    guest = new Guest();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                GuestScene guestScene = new GuestScene(guest);
+                try {
+                    guestScene.start(new Stage()); // блять
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+                GuestController guestController = new GuestController(guest, guestScene);
+
+
+//                try {
+//                    guest.start(new Stage());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 // Закрываем окно авторизации
-                //mainWindow.close();
+                mainWindow.close();
             }
         });
+
         guestButton.setMaxWidth(Double.MAX_VALUE);
         GridPane.setMargin(guestButton, new Insets(10, 0, 0, 0));
         loginLayout.add(guestButton, 1, 4);
@@ -84,12 +109,59 @@ public class Auth extends Application {
         loginLayout.add(hbBtn, 1, 5);
 
         // Добавляем обработчик событий для кнопки входа
+//        loginButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                // Место для проверки соответствия логина и пароля, и перехода на главную страницу при успешной авторизации
+//
+//            }
+//        });
+
+        // Добавляем обработчик событий для кнопки входа
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+            @Override public void handle(ActionEvent event) {
                 // Место для проверки соответствия логина и пароля, и перехода на главную страницу при успешной авторизации
+                String login = loginField.getText();
+                String password = passwordField.getText();
+                System.out.println(login);
+                System.out.println(password);
+
+                Client client = null;
+
+                try {
+                    client = new Client(login, password);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                ClientScene clientScene = new ClientScene(client);
+                try {
+                    clientScene.start(new Stage()); // блять
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                ClientController clientController = new ClientController(client, clientScene);
+//
+//                С
+//
+//                // Проверяем, являются ли логин и пароль корректными
+//                if (checkCredentials(login, password)) {
+//                    MainScene mainScene = new MainScene();
+//                    try {
+//                        mainScene.start(new Stage());
+//                    } catch (Exception e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    mainWindow.close();
+//                } else {
+//                    Alert alert = new Alert(Alert.AlertType.ERROR, "Wrong login or password!");
+//                    alert.showAndWait();
+//                }
             }
-        });
+
+    });
+
+
 
         // Создаем окно регистрации на основе VBox
         VBox registrationLayout = new VBox(10);
@@ -113,7 +185,6 @@ public class Auth extends Application {
         Button registrationButton = new Button("Register");
         registrationButton.setStyle("-fx-background-color: #2F4F4F; -fx-text-fill: #FFFFFF;");
 
-///, [02.07.2023 16:34]
 // Добавляем обработчик событий для кнопки регистрации
         registrationButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override

@@ -1,4 +1,4 @@
 package ru.kucherova.furniturefactory.view;
 
-public class Client {
+public class LineScene {
 }

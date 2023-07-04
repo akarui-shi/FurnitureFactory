@@ -2,19 +2,20 @@ package ru.kucherova.furniturefactory.model;
 
 import ru.kucherova.furniturefactory.database.DataBase;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class Furniture {
+public class Line {
     //private final ListView<String> furnitureList;
 
     private DataBase dataBase;
 
 
-    public Furniture( DataBase dataBase) {
+    public Line( DataBase dataBase) {
         this.dataBase = dataBase;
     }
 
@@ -24,11 +25,11 @@ public class Furniture {
     public List<String> getAll() throws SQLException {
         Statement statement = dataBase.connection.createStatement();
 
-        String furnitureQuery = "SELECT * FROM Furniture";
+        String furnitureQuery = "SELECT * FROM Line";
         ResultSet furnitureResult = statement.executeQuery(furnitureQuery);
         List<String> furnitureItems = new ArrayList<>();
         while (furnitureResult.next()) {
-            String furnitureName = furnitureResult.getString("type");
+            String furnitureName = furnitureResult.getString("name");
             furnitureItems.add(furnitureName);
         }
         statement.close();
@@ -74,61 +75,36 @@ public class Furniture {
         int rowsAffected = statement.executeUpdate(furnitureQuery);
     }
 
-    public List<String>   getItemDataFromDatabase(DataBase dataBase, String type) throws SQLException {
+    public List<String>  getItemDataFromDatabase(DataBase dataBase) throws SQLException {
 
         // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
-//        String query = "SELECT Component.type AS component, Line.name AS line, Store.address AS address " +
-//                "FROM Furniture " +
-//                "JOIN Line ON Furniture.line_id = Line.id " +
-//                "JOIN FurnitureComponent ON Furniture.id = FurnitureComponent.furniture_id " +
-//                "JOIN Component ON FurnitureComponent.component_id = Component.id " +
-//                "JOIN FurnitureStore ON Furniture.id = FurnitureStore.furniture_id " +
-//                //"JOIN `Order` ON OrderFurniture.order_id = `Order`.id " +
-//                "JOIN Store ON `FurnitureStore.store_id = Store.id " +
-//                "WHERE Furniture.type = \"" + type + "\"";
-        // Запрос для получения компонентов, линий и магазинов для заданного предмета мебели
-        String query = "SELECT Component.type AS component, Line.name AS line, Store.address " +
+        String query = "SELECT Component.type AS component, Line.name AS line, Order.date, Store.address " +
                 "FROM Furniture " +
                 "JOIN Line ON Furniture.line_id = Line.id " +
                 "JOIN FurnitureComponent ON Furniture.id = FurnitureComponent.furniture_id " +
                 "JOIN Component ON FurnitureComponent.component_id = Component.id " +
-                "JOIN FurnitureStore ON Furniture.id = FurnitureStore.furniture_id " +
-                "JOIN Store ON FurnitureStore.store_id = Store.id " +
-                "WHERE Furniture.type = \"" + type + "\"";
+                "JOIN OrderFurniture ON Furniture.id = OrderFurniture.furniture_id " +
+                "JOIN `Order` ON OrderFurniture.order_id = `Order`.id " +
+                "JOIN Store ON `Order`.store_id = Store.id " +
+                "WHERE Furniture.type =" + this;
 
         PreparedStatement statement = dataBase.connection.prepareStatement(query);
+        statement.setString(1, this.toString() );
 
         ResultSet resultSet = statement.executeQuery();
 
         List<String> data = new ArrayList<>();
+        if (resultSet.next()) {
+            String component = resultSet.getString("component");
+            String line = resultSet.getString("line");
+            String order = resultSet.getString("date");
+            String shop = resultSet.getString("address");
 
-        Set<String> setComponent = new HashSet<>();
-        Set<String> setLine = new HashSet<>();
-        Set<String> setShop = new HashSet<>();
-        while (resultSet.next()) {
-            setComponent.add(resultSet.getString("component"));
-            setLine.add(resultSet.getString("line"));
-            setShop.add(resultSet.getString("address"));
-//            String component = resultSet.getString("component");
-//            System.out.println(component);
-//            String line = resultSet.getString("line");
-//            System.out.println(line);
-//            //String order = resultSet.getString("date");
-//            String shop = resultSet.getString("address");
-//            data.add(component);
-//            System.out.println(shop);
-//            data.add(line);
-//            //data.add(order);
-//            data.add(shop);
+            data.add(component);
+            data.add(line);
+            data.add(order);
+            data.add(shop);
         }
-        String component = setComponent.toString().replace("[", "").replace("]", "");
-        String line = setLine.toString().replace("[", "").replace("]", "");
-        String shop = setShop.toString().replace("[", "").replace("]", "");
-
-        data.add(component);
-        data.add(line);
-        data.add(shop);
-        System.out.println(data);
 
         resultSet.close();
         statement.close();
