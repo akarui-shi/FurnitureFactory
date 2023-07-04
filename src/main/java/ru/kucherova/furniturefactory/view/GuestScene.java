@@ -29,47 +29,6 @@ public class GuestScene extends Application  { //линейки, мебель, �
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-//        DataBase dataBase = new DataBase();
-//
-//        // Создаем списки элементов
-//        furnitureList = new ListView<>();
-//        Furniture furniture = new Furniture(dataBase);
-//        ObservableList<String> furnitureItems = FXCollections.observableArrayList(
-//                furniture.getAll());
-//        furnitureList.setItems(furnitureItems);
-//
-//        componentList = new ListView<>();
-//        Component component = new Component(dataBase);
-//        ObservableList<String> componentItems = FXCollections.observableArrayList(
-//                component.getAll());
-//        componentList.setItems(componentItems);
-//
-//        lineList = new ListView<>();
-//        Line line = new Line(dataBase);
-//        ObservableList<String> orderItems = FXCollections.observableArrayList(
-//                line.getAll());
-//        lineList.setItems(orderItems);
-//
-//        shopList = new ListView<>();
-//        Store store = new Store(dataBase);
-//        ObservableList<String> shopItems = FXCollections.observableArrayList(
-//                store.getAll());
-//        shopList.setItems(shopItems);
-
-        // Привязываем действия к списку Мебели
-//        furnitureList.setOnMouseClicked(event -> {
-//            if (event.getClickCount() == 2) {
-//                String selectedItem = furnitureList.getSelectionModel().getSelectedItem();
-//                try {
-//                    furnitureScene= new FurnitureScene(furniture);
-//                    furnitureScene.showItemDetails(dataBase, selectedItem);
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-
         // Создаем графический интерфейс
         VBox root = new VBox();
         root.setPadding(new Insets(10));
