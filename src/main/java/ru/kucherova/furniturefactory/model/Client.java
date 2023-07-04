@@ -12,8 +12,8 @@ import java.sql.SQLException;
 public class Client {
     DataBase dataBase;
 
-    String login;
-    String password;
+    public String login;
+    public String password;
 
     public ListView<String> furnitureList;
     public ListView<String> componentList;
@@ -54,9 +54,9 @@ public class Client {
         shopList.setItems(shopItems);
 
         orgerList = new ListView<>();
-        Order order = new Order(dataBase);
+        Order order = new Order(dataBase, this);
         ObservableList<String> orderItems = FXCollections.observableArrayList(
-                order.getAll(login));
+                order.getAll());
         orgerList.setItems(orderItems);
     }
 
