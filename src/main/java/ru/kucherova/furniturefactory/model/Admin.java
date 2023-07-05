@@ -78,22 +78,4 @@ public class Admin {
         return this.dataBase;
     }
 
-//    private void handleFurnitureItemClick(MouseEvent event) {
-//        if (event.getButton() == MouseButton.SECONDARY) {
-//            String selectedFurniture = furnitureList.getSelectionModel().getSelectedItem();
-//            if (selectedFurniture != null) {
-//                MenuItem deleteItem = new MenuItem("Delete");
-//                deleteItem.setOnAction(e -> {
-//                    //                        Furniture furniture = new Furniture(dataBase);
-////                        furniture.delete(selectedFurniture);
-////                        furnitureList.getItems().remove(selectedFurniture);
-//                    System.out.println("ура");
-//                });
-//
-//                ContextMenu contextMenu = new ContextMenu(deleteItem);
-//                furnitureList.setContextMenu(contextMenu);
-//            }
-//        }
-//    }
-
 }

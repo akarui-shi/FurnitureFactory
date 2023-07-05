@@ -12,6 +12,7 @@ import ru.kucherova.furniturefactory.model.*;
 import ru.kucherova.furniturefactory.view.*;
 
 import java.sql.*;
+import java.util.Random;
 
 public class ClientController  {
     Client client;
@@ -167,10 +168,12 @@ public class ClientController  {
                     System.out.println(orderId);
                     // Создание нового заказа
                     PreparedStatement stmt2 = client.getDataBase().connection.prepareStatement("INSERT INTO `Order` (id , date, store_id, name, user_id) VALUES (?, ? , ?, CONCAT('TP1-', FLOOR(RAND()*8999+1000)) , ?)");
+                    Random rand = new Random();
+                    int number = rand.nextInt(10) + 1;
                     stmt2.setInt(1, orderId);
                     stmt2.setDate(2, new Date(System.currentTimeMillis()));
-                    stmt2.setInt(3, 1);
-                    stmt2.setInt(4, 1);
+                    stmt2.setInt(3, number);
+                    stmt2.setInt(4, client.getId());
 
                     stmt2.executeUpdate();
                     stmt2.close();

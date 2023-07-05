@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
     DataBase dataBase;
@@ -100,6 +102,49 @@ public class Client {
         ObservableList<String> orderItems = FXCollections.observableArrayList(
                 order.getAll(login));
         orgerList.setItems(orderItems);
+    }
+
+    public void save() throws SQLException {
+        Statement stmt = dataBase.connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS id FROM `User`");
+        int lineId = 0;
+        while (rs.next()) {
+            lineId = rs.getInt("id");
+        }
+
+        rs.close();
+        stmt.close();
+
+        lineId+=1;
+        System.out.println(lineId);
+
+        String query = "INSERT INTO `User` (id, username, password_hash)" +
+                "VALUES (" + lineId + ", \"" + login + "\", \"" + password + "\"); ";
+        PreparedStatement stmt2 = dataBase.connection.prepareStatement(query);
+        stmt2.executeUpdate();
+        stmt2.close();
+
+        String query1 = "INSERT INTO UserRole (user_id, role_id) " +
+                "SELECT `User`.id, Role.id FROM `User`, Role " +
+                "WHERE `User`.id = "+ lineId +" AND Role.name = 'Клиент';";
+        PreparedStatement stmt3 = dataBase.connection.prepareStatement(query1);
+        stmt3.executeUpdate();
+        stmt3.close();
+    }
+
+    public int getId() throws SQLException {
+        Statement statement = dataBase.connection.createStatement();
+
+        String query = "SELECT id FROM User " +
+                "WHERE username = \"" + login + "\" AND password_hash = \"" + password + "\";";
+        int id = 0;
+        ResultSet idSet = statement.executeQuery(query);
+        while (idSet.next()) {
+            id = idSet.getInt("id");
+        }
+        statement.close();
+
+        return id;
     }
 
     public DataBase getDataBase(){

@@ -169,6 +169,54 @@ public class AuthScene extends Application {
             @Override
             public void handle(ActionEvent event) {
                 // Место для проверки корректности введенных данных, и сохранения нового пользователя в базе данных
+                String username = newLoginField.getText();
+                String password = newPasswordField.getText();
+
+                // Проверка корректности введенных данных
+                if (username.isEmpty() || password.isEmpty()) {
+                    // Вывод сообщения об ошибке
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Ошибка регистрации");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Пожалуйста, введите логин и пароль");
+                    alert.showAndWait();
+                    return;
+                }
+
+                try {
+                    // Создание нового пользователя
+                    Client newClient = new Client(username, password);
+
+                    // Сохранение нового пользователя в базе данных
+                    newClient.save();
+
+                    // Вывод сообщения об успешной регистрации
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Регистрация");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Пользователь успешно зарегистрирован");
+                    alert.showAndWait();
+
+                    // Очистка полей ввода
+                    newLoginField.setText("");
+                    newPasswordField.setText("");
+
+                    ClientScene clientScene = new ClientScene(newClient);
+                    clientScene.start(new Stage());
+                    ClientController clientController = new ClientController(newClient, clientScene);
+
+                    mainWindow.close();
+
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    // Вывод сообщения об ошибке
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Ошибка регистрации");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Произошла ошибка при регистрации пользователя");
+                    alert.showAndWait();
+                }
             }
         });
 
