@@ -8,12 +8,15 @@ import ru.kucherova.furniturefactory.database.DataBase;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Client {
     DataBase dataBase;
 
     public String login;
     public String password;
+
+    Order order;
 
     public ListView<String> furnitureList;
     public ListView<String> componentList;
@@ -54,7 +57,7 @@ public class Client {
         shopList.setItems(shopItems);
 
         orgerList = new ListView<>();
-        Order order = new Order(dataBase, this);
+        order = new Order(dataBase, this);
         ObservableList<String> orderItems = FXCollections.observableArrayList(
                 order.getAll());
         orgerList.setItems(orderItems);
@@ -93,6 +96,13 @@ public class Client {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void refreshOrderList() throws SQLException {
+        orgerList.getItems().clear();
+        ObservableList<String> orderItems = FXCollections.observableArrayList(
+                order.getAll());
+        orgerList.setItems(orderItems);
     }
 
     public DataBase getDataBase(){

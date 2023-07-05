@@ -1,10 +1,26 @@
 package ru.kucherova.furniturefactory.controller;
 
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.model.*;
 import ru.kucherova.furniturefactory.view.*;
 
-import java.sql.SQLException;
+import java.io.IOException;
+import java.sql.*;
+
 public class ClientController  {
+
     Client client;
     ClientScene clientScene;
     FurnitureScene furnitureScene;
@@ -85,5 +101,121 @@ public class ClientController  {
                 }
             }
         });
+
+        clientScene.addOrderButton.setOnAction(event -> showAddOrderDialog());
     }
+
+    private void showAddOrderDialog() {
+        try {
+
+            // Создание диалогового окна для создания нового заказа
+            Stage dialog = new Stage();
+
+            BorderPane root = new BorderPane();
+            dialog.setScene(new Scene(root, 500, 400));
+
+            Label title = new Label("Добавление нового заказа");
+            title.setAlignment(Pos.CENTER);
+            BorderPane.setAlignment(title, Pos.CENTER);
+            BorderPane.setMargin(title, new Insets(20));
+            root.setTop(title);
+
+            // Получение списка мебели для выбора
+            ListView<CheckBox> furnitureCheckBoxList = new ListView<>();
+            ObservableList<CheckBox> checkBoxList = furnitureCheckBoxList.getItems();
+
+            Statement stmt = client.getDataBase().connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id, type, article FROM Furniture");
+
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String type = rs.getString(2);
+                String article = rs.getString(3);
+                CheckBox checkBox = new CheckBox(String.format("%s [Артикул: %s]", type, article));
+                checkBox.setId(Integer.toString(id));
+                checkBoxList.add(checkBox);
+            }
+
+            rs.close();
+            stmt.close();
+
+            VBox checkboxBox = new VBox(furnitureCheckBoxList);
+            checkboxBox.setAlignment(Pos.TOP_CENTER);
+            checkboxBox.setPadding(new Insets(20));
+            checkboxBox.setSpacing(10);
+            root.setCenter(checkboxBox);
+
+            // Создание кнопки для добавления заказа в базу данных
+            Button addButton = new Button("Добавить заказ");
+            addButton.setOnAction(event -> {
+                try {
+                    // Получение выбранных пользователем предметов мебели
+                    ObservableList<CheckBox> checkedItems = furnitureCheckBoxList.getItems();
+                    StringBuilder furnitureIds = new StringBuilder();
+
+                    for (CheckBox checkBox : checkedItems) {
+                        if (checkBox.isSelected()) {
+                            if (furnitureIds.length() > 0) {
+                                furnitureIds.append(",");
+                            }
+                            furnitureIds.append(checkBox.getId());
+                        }
+                    }
+
+                    PreparedStatement stmt3 = client.getDataBase().connection.prepareStatement("SELECT MAX(id) AS id FROM `Order`");
+                    ResultSet rs2 = stmt3.executeQuery();
+                     int orderId = 0;
+                     while (rs2.next()) {
+                         orderId = rs2.getInt("id");
+                     }
+
+                    rs2.close();
+                    stmt3.close();
+
+                    orderId +=1;
+                    System.out.println(orderId);
+                    // Создание нового заказа
+                    PreparedStatement stmt2 = client.getDataBase().connection.prepareStatement("INSERT INTO `Order` (id , date, store_id, name, user_id) VALUES (?, ? , ?, CONCAT('TP1-', FLOOR(RAND()*8999+1000)) , ?)");
+                    stmt2.setInt(1, orderId);
+                    stmt2.setDate(2, new Date(System.currentTimeMillis()));
+                    stmt2.setInt(3, 1);
+                    stmt2.setInt(4, 1);
+
+                    stmt2.executeUpdate();
+                    stmt2.close();
+
+                    // Добавление мебели в заказ
+                    String[] furnitureIdList = furnitureIds.toString().split(",");
+                    for (String furnitureId : furnitureIdList) {
+                        PreparedStatement stmt4 = client.getDataBase().connection.prepareStatement("INSERT INTO OrderFurniture (order_id, furniture_id, quantity) VALUES (?, ?, ?)");
+                        stmt4.setInt(1, orderId);
+                        stmt4.setInt(2, Integer.parseInt(furnitureId));
+                        stmt4.setInt(3, 1);
+                        stmt4.executeUpdate();
+                        stmt4.close();
+                    }
+
+                    // Обновление списка заказов
+                    clientScene.client.refreshOrderList();
+
+                    // Закрытие диалогового окна
+                    dialog.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            root.setBottom(addButton);
+            BorderPane.setAlignment(addButton, Pos.CENTER);
+            BorderPane.setMargin(addButton, new Insets(20));
+
+            // Отображение диалогового окна
+            dialog.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

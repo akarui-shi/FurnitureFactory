@@ -143,22 +143,6 @@ public class Auth extends Application {
                 ClientController clientController = new ClientController(client, clientScene);
 
                 mainWindow.close();
-//
-//                С
-//
-//                // Проверяем, являются ли логин и пароль корректными
-//                if (checkCredentials(login, password)) {
-//                    MainScene mainScene = new MainScene();
-//                    try {
-//                        mainScene.start(new Stage());
-//                    } catch (Exception e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    mainWindow.close();
-//                } else {
-//                    Alert alert = new Alert(Alert.AlertType.ERROR, "Wrong login or password!");
-//                    alert.showAndWait();
-//                }
             }
 
     });

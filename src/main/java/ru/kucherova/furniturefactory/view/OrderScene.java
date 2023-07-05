@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class OrderScene {
-    Order order;
+    public Order order;
 
     public OrderScene(Order order){
 

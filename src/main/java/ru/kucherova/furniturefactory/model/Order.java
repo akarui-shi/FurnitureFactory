@@ -1,5 +1,6 @@
 package ru.kucherova.furniturefactory.model;
 
+import javafx.collections.ObservableList;
 import ru.kucherova.furniturefactory.database.DataBase;
 
 import java.sql.PreparedStatement;
@@ -135,6 +136,33 @@ public class Order {
 
         return data;
     }
+
+    public void refreshOrderList() throws SQLException {
+        // Запрос к базе данных на получение списка заказов
+        Statement stmt = client.getDataBase().connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT o.id, o.date, SUM(f.price) FROM `Order` o JOIN OrderFurniture of ON o.id = of.order_id JOIN Furniture f ON of.furniture_id = f.id GROUP BY o.id");
+//
+//        ObservableList<String> orderList = client.orgerList.getItems();
+//        orderList.clear();
+        client.orgerList.refresh();
+//
+//        double totalCost = 0.0;
+//
+//        // Добавление заказов в список
+//        while (rs.next()) {
+//            int id = rs.getInt(1);
+//            String date = rs.getDate(2).toString();
+//            double cost = rs.getDouble(3);
+//            //orderList.add(String.format("Заказ #%d (%s) - %.2f руб.", id, date, cost));
+//
+//            totalCost += cost;
+//        }
+
+        rs.close();
+        stmt.close();
+    }
+
+
 
 
 
