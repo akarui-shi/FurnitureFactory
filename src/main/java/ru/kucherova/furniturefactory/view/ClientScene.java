@@ -4,9 +4,7 @@ import javafx.application.Application;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.model.Client;
@@ -20,6 +18,8 @@ public class ClientScene extends Application { //линейки, мебель, �
     public Client client;
     public Button addOrderButton;
     Tab orderTab;
+
+    public Button profileButton;
 
     public ClientScene(Client client){
         this.client = client;
@@ -49,7 +49,10 @@ public class ClientScene extends Application { //линейки, мебель, �
         tabPane.getTabs().addAll(lineTab, furnitureTab, componentTab, shopTab, orderTab);
         furnitureTab.setClosable(false);
 
-        root.get().getChildren().addAll(tabPane);
+        // Создаем кнопку "Профиль"
+        profileButton = new Button("Профиль");
+
+        root.get().getChildren().addAll(profileButton, tabPane);
 
         Scene scene = new Scene(root.get(), 800, 600);
         scene.getStylesheets().add(String.valueOf(Guest.class.getResource("furniture.css"))); //получение стиля

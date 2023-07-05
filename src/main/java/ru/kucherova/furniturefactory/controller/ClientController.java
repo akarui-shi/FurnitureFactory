@@ -4,10 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -96,6 +93,7 @@ public class ClientController  {
         });
 
         clientScene.addOrderButton.setOnAction(event -> showAddOrderDialog());
+        clientScene.profileButton.setOnAction(e -> showProfile());
     }
 
     private void showAddOrderDialog() {
@@ -207,6 +205,64 @@ public class ClientController  {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showProfile() {
+        Dialog<Client> dialog = new Dialog<>();
+        dialog.setTitle("Профиль пользователя");
+        dialog.setHeaderText("Данные пользователя");
+
+        ButtonType changeButton = new ButtonType("Изменить", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(changeButton, ButtonType.CANCEL);
+
+        // Создаем текстовые поля для отображения данных пользователя
+        TextField loginField = new TextField(client.login);
+        loginField.setEditable(false);
+        PasswordField passwordField = new PasswordField();
+        passwordField.setText(client.password);
+        passwordField.setEditable(false);
+
+        // Создаем кнопку "Изменить"
+        Button changePasswordButton = new Button("Изменить пароль");
+        changePasswordButton.setOnAction(e -> {
+            passwordField.setEditable(true);
+            passwordField.requestFocus();
+        });
+
+        VBox content = new VBox(10);
+        content.getChildren().addAll(
+                new Label("Логин:"),
+                loginField,
+                new Label("Пароль:"),
+                passwordField,
+                changePasswordButton
+        );
+
+        dialog.getDialogPane().setContent(content);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == changeButton) {
+                //return new User(currentUser.getId(), currentUser.getLogin(), passwordField.getText());
+            }
+            return null;
+        });
+
+        // При закрытии диалога сохраняем изменения
+        dialog.setOnCloseRequest(e -> {
+            Client updatedUser = dialog.getResult();
+            System.out.println("ВАУ");
+//            if (updatedUser != null) {
+//                try {
+//                    currentUser.setPassword(updatedUser.getPassword());
+//                    // Сохраняем изменения в базе данных
+//                    currentUser.update();
+//                } catch (SQLException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+        });
+
+        dialog.showAndWait();
     }
 
 

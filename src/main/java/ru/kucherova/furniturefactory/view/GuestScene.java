@@ -60,9 +60,7 @@ public class GuestScene extends Application  { //линейки, мебель, �
     }
 
 
-
     public static void main(String[] args) {
         launch(args);
     }
-
 }
