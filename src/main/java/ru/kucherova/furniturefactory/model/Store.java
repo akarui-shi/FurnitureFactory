@@ -35,24 +35,6 @@ public class Store {
         return componentItems;
     }
 
-//    public List<String> getFromFurniture(String store) throws SQLException {
-//        Statement statement = dataBase.connection.createStatement();
-//        String componentQuery = "SELECT c.type, c.cost, fc.quantity " +
-//                "FROM Furniture f JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
-//                "JOIN Component c ON fc.component_id = c.id " +
-//                "WHERE f.type = " + furniture + ";";
-//
-//        ResultSet componentResult = statement.executeQuery(componentQuery);
-//        List<String> furnitureItems = new ArrayList<>();
-//        while (componentResult.next()) {
-//            String furnitureName = componentResult.getString("type");
-//            furnitureItems.add(furnitureName);
-//        }
-//        statement.close();
-//
-//        return furnitureItems;
-//    }
-
     public void add(String type, Double cost) throws SQLException {
         Statement statement = dataBase.connection.createStatement();
         String query = "NSERT INTO Component (type, cost) " +
@@ -87,7 +69,4 @@ public class Store {
 
         return data;
     }
-
-
-
 }

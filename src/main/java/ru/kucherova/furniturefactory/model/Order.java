@@ -1,6 +1,5 @@
 package ru.kucherova.furniturefactory.model;
 
-import javafx.collections.ObservableList;
 import ru.kucherova.furniturefactory.database.DataBase;
 
 import java.sql.PreparedStatement;
@@ -102,12 +101,7 @@ public class Order {
                 "JOIN `User` ON `Order`.user_id = `User`.id\n" +
                 "JOIN Store ON `Order`.store_id = Store.id\n" +
                 "WHERE `Order`.name = \"" + type + "\" AND `User`.username = \"" + client.login + "\"";
-
-        //SELECT `Order`.date, Store.name FROM `Order` INNER JOIN `User` ON `Order`.user_id = `User`.id INNER JOIN Store ON `Order`.store_id = Store.id WHERE `Order`.`name` = "TP1-8309" AND `User`.`username` = "john_doe";
-
         PreparedStatement statement = dataBase.connection.prepareStatement(query);
-        //statement.setString(1, this.toString() );
-
         ResultSet resultSet = statement.executeQuery();
 
         List<String> data = new ArrayList<>();
@@ -186,34 +180,4 @@ public class Order {
 
         return data;
     }
-
-    public void refreshOrderList() throws SQLException {
-        // Запрос к базе данных на получение списка заказов
-        Statement stmt = client.getDataBase().connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT o.id, o.date, SUM(f.price) FROM `Order` o JOIN OrderFurniture of ON o.id = of.order_id JOIN Furniture f ON of.furniture_id = f.id GROUP BY o.id");
-//
-//        ObservableList<String> orderList = client.orgerList.getItems();
-//        orderList.clear();
-        client.orgerList.refresh();
-//
-//        double totalCost = 0.0;
-//
-//        // Добавление заказов в список
-//        while (rs.next()) {
-//            int id = rs.getInt(1);
-//            String date = rs.getDate(2).toString();
-//            double cost = rs.getDouble(3);
-//            //orderList.add(String.format("Заказ #%d (%s) - %.2f руб.", id, date, cost));
-//
-//            totalCost += cost;
-//        }
-
-        rs.close();
-        stmt.close();
-    }
-
-
-
-
-
 }

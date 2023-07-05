@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.database.DataBase;
@@ -40,8 +42,8 @@ public class ComponentScene {
         Text componentText = new Text(itemData.toString().replaceAll(", ", System.lineSeparator()).replace("[", "").replace("]", ""));
 
         // Устанавливаем стили для меток и текстовых полей
-        componentLabel.setStyle("-fx-font-weight: bold;");
-        componentText.setStyle("-fx-font-size: 14;");
+        componentLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        componentText.setFont(Font.font(14));
 
         // Добавляем метки и текстовые поля в контейнер
         container.getChildren().addAll(componentLabel, componentText);

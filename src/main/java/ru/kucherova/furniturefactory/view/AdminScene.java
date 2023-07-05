@@ -8,8 +8,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ru.kucherova.furniturefactory.FurnitureApp;
 import ru.kucherova.furniturefactory.model.Admin;
-import ru.kucherova.furniturefactory.model.Client;
 import ru.kucherova.furniturefactory.model.Guest;
 
 import java.sql.SQLException;
@@ -127,17 +127,13 @@ public class AdminScene extends Application { //линейки, мебель, к
         StoreMenu.getItems().add(deleteStore);
         admin.shopList.setContextMenu(StoreMenu);
 
-        Scene scene = new Scene(root.get(), 800, 600);
-        scene.getStylesheets().add(String.valueOf(Guest.class.getResource("furniture.css"))); //получение стиля
+        Scene scene = new Scene(root.get(), 800, 500);
+        scene.getStylesheets().add(String.valueOf(FurnitureApp.class.getResource("furniture.css"))); //получение стиля
         primaryStage.setScene(scene);
         primaryStage.setTitle("Furniture Factory");
-        //primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setResizable(false);
+
         primaryStage.show();
 
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }

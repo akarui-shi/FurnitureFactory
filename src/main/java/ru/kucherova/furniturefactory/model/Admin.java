@@ -1,14 +1,11 @@
 package ru.kucherova.furniturefactory.model;
 
+import ru.kucherova.furniturefactory.database.DataBase;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import ru.kucherova.furniturefactory.database.DataBase;
-
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class Admin {
     DataBase dataBase;

@@ -1,8 +1,5 @@
 package ru.kucherova.furniturefactory.model;
 
-
-
-import javafx.scene.control.ListView;
 import ru.kucherova.furniturefactory.database.DataBase;
 
 import java.sql.PreparedStatement;
@@ -13,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Component {
-    //private final ListView<String> furnitureList;
-
     private DataBase dataBase;
 
 
@@ -42,15 +37,10 @@ public class Component {
 
     public List<String> getFromComponent(String component) throws SQLException {
         Statement statement = dataBase.connection.createStatement();
-//        String furnitureQuery = "SELECT c.type, c.cost, fc.quantity " +
-//                "FROM Furniture f JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
-//                "JOIN Component c ON fc.component_id = c.id " +
-//                "WHERE f.type = " + component + ";";
         String furnitureQuery = "SELECT f.type FROM Furniture f " +
                 "JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
                 "JOIN Component c ON fc.component_id = c.id " +
                 "WHERE c.type = "+ component + ";";
-
 
         ResultSet furnitureResult = statement.executeQuery(furnitureQuery);
         List<String> furnitureItems = new ArrayList<>();
@@ -107,8 +97,4 @@ public class Component {
 
         return data;
     }
-
-
-
-
 }

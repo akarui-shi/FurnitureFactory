@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.database.DataBase;
@@ -39,8 +41,9 @@ public class LineScene {
         Text furnitureText = new Text(itemData.toString().replaceAll(", ", System.lineSeparator()).replace("[", "").replace("]", ""));
 
         // Устанавливаем стили для меток и текстовых полей
-        furnitureLabel.setStyle("-fx-font-weight: bold;");
-        furnitureText.setStyle("-fx-font-size: 14;");
+
+        furnitureLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        furnitureText.setFont(Font.font(14));
 
         // Добавляем метки и текстовые поля в контейнер
         container.getChildren().addAll(furnitureLabel, furnitureText);

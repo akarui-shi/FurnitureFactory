@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Line {
-    //private final ListView<String> furnitureList;
-
     private DataBase dataBase;
-
 
     public Line( DataBase dataBase) {
         this.dataBase = dataBase;
@@ -36,15 +33,10 @@ public class Line {
 
     public List<String> getFromComponent(String component) throws SQLException {
         Statement statement = dataBase.connection.createStatement();
-//        String furnitureQuery = "SELECT c.type, c.cost, fc.quantity " +
-//                "FROM Furniture f JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
-//                "JOIN Component c ON fc.component_id = c.id " +
-//                "WHERE f.type = " + component + ";";
         String furnitureQuery = "SELECT f.type FROM Furniture f " +
                 "JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
                 "JOIN Component c ON fc.component_id = c.id " +
                 "WHERE c.type = "+ component + ";";
-
 
         ResultSet furnitureResult = statement.executeQuery(furnitureQuery);
         List<String> furnitureItems = new ArrayList<>();
@@ -64,12 +56,6 @@ public class Line {
         while (rs.next()) {
             lineId = rs.getInt("id");
         }
-//        PreparedStatement statement = dataBase.connection.prepareStatement("SELECT MAX(id) AS id FROM `Line`");
-//        ResultSet resultSet = statement.executeQuery();
-//        int lineId = 0;
-//        while (resultSet.next()) {
-//            lineId = resultSet.getInt("id");
-//        }
 
         rs.close();
         stmt.close();
@@ -92,15 +78,12 @@ public class Line {
     }
 
     public List<String> getItemDataFromDatabase(DataBase dataBase,  String type) throws SQLException {
-
-        // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
         String query = "SELECT Furniture.type\n" +
                 "FROM Furniture\n" +
                 "INNER JOIN Line ON Furniture.line_id = Line.id\n" +
                 "WHERE Line.name = \"" + type + "\"";
 
         PreparedStatement statement = dataBase.connection.prepareStatement(query);
-        //statement.setString(1, this.toString() );
 
         ResultSet resultSet = statement.executeQuery();
 
@@ -109,8 +92,6 @@ public class Line {
             String furniture = resultSet.getString("type");
             data.add(furniture);
         }
-
-        System.out.println(data);
 
         resultSet.close();
         statement.close();

@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import ru.kucherova.furniturefactory.database.DataBase;
-import ru.kucherova.furniturefactory.view.FurnitureScene;
 
 import java.sql.SQLException;
 

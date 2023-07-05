@@ -9,12 +9,9 @@ public class GuestController {
     Guest guest;
     GuestScene guestScene;
     FurnitureScene furnitureScene;
-
     ComponentScene componentScene;
-
     LineScene lineScene;
     StoreScene storeScene;
-
 
     public GuestController(Guest guest, GuestScene guestScene){
         this.guest = guest;

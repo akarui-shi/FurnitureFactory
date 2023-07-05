@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public class Furniture {
-    //private final ListView<String> furnitureList;
-
     private DataBase dataBase;
 
 
@@ -38,10 +36,6 @@ public class Furniture {
 
     public List<String> getFromComponent(String component) throws SQLException {
         Statement statement = dataBase.connection.createStatement();
-//        String furnitureQuery = "SELECT c.type, c.cost, fc.quantity " +
-//                "FROM Furniture f JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
-//                "JOIN Component c ON fc.component_id = c.id " +
-//                "WHERE f.type = " + component + ";";
         String furnitureQuery = "SELECT f.type FROM Furniture f " +
                 "JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
                 "JOIN Component c ON fc.component_id = c.id " +
@@ -75,17 +69,6 @@ public class Furniture {
     }
 
     public List<String>   getItemDataFromDatabase(DataBase dataBase, String type) throws SQLException {
-
-        // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
-//        String query = "SELECT Component.type AS component, Line.name AS line, Store.address AS address " +
-//                "FROM Furniture " +
-//                "JOIN Line ON Furniture.line_id = Line.id " +
-//                "JOIN FurnitureComponent ON Furniture.id = FurnitureComponent.furniture_id " +
-//                "JOIN Component ON FurnitureComponent.component_id = Component.id " +
-//                "JOIN FurnitureStore ON Furniture.id = FurnitureStore.furniture_id " +
-//                //"JOIN `Order` ON OrderFurniture.order_id = `Order`.id " +
-//                "JOIN Store ON `FurnitureStore.store_id = Store.id " +
-//                "WHERE Furniture.type = \"" + type + "\"";
         // Запрос для получения компонентов, линий и магазинов для заданного предмета мебели
         String query = "SELECT Component.type AS component, Line.name AS line, Store.address " +
                 "FROM Furniture " +
@@ -97,7 +80,6 @@ public class Furniture {
                 "WHERE Furniture.type = \"" + type + "\"";
 
         PreparedStatement statement = dataBase.connection.prepareStatement(query);
-
         ResultSet resultSet = statement.executeQuery();
 
         List<String> data = new ArrayList<>();
@@ -109,17 +91,6 @@ public class Furniture {
             setComponent.add(resultSet.getString("component"));
             setLine.add(resultSet.getString("line"));
             setShop.add(resultSet.getString("address"));
-//            String component = resultSet.getString("component");
-//            System.out.println(component);
-//            String line = resultSet.getString("line");
-//            System.out.println(line);
-//            //String order = resultSet.getString("date");
-//            String shop = resultSet.getString("address");
-//            data.add(component);
-//            System.out.println(shop);
-//            data.add(line);
-//            //data.add(order);
-//            data.add(shop);
         }
         String component = setComponent.toString().replace("[", "").replace("]", "");
         String line = setLine.toString().replace("[", "").replace("]", "");

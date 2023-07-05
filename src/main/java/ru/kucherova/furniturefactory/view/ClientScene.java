@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import ru.kucherova.furniturefactory.FurnitureApp;
 import ru.kucherova.furniturefactory.model.Client;
 import ru.kucherova.furniturefactory.model.Guest;
 
@@ -55,9 +56,10 @@ public class ClientScene extends Application { //линейки, мебель, �
         root.get().getChildren().addAll(profileButton, tabPane);
 
         Scene scene = new Scene(root.get(), 800, 600);
-        scene.getStylesheets().add(String.valueOf(Guest.class.getResource("furniture.css"))); //получение стиля
+        scene.getStylesheets().add(String.valueOf(FurnitureApp.class.getResource("furniture.css"))); //получение стиля
         primaryStage.setScene(scene);
         primaryStage.setTitle("Furniture Factory");
+        primaryStage.setResizable(false);
         //primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
 

@@ -1,0 +1,144 @@
+.root {
+ -fx-background-color: #F5F5F5;
+}
+
+.title-label {
+ -fx-font-family: Verdana;
+ -fx-font-weight: bold;
+ -fx-font-size: 14px;
+ -fx-text-fill: #2F4F4F;
+}
+
+.login-field,
+.password-field,
+.new-login-field,
+.new-password-field,
+.confirm-password-field {
+ -fx-prompt-text-fill: #808080;
+}
+
+.guest-button {
+ -fx-background-color: #F5F5F5;
+ -fx-text-fill: #2F4F4F;
+}
+
+.login-button,
+.register-button {
+ -fx-background-color: #2F4F4F;
+ -fx-text-fill: #FFFFFF;
+}
+
+.tab-pane {
+ -fx-tab-min-height: 30px;
+}
+
+.tab {
+ -fx-background-color: #F5F5F5;
+ -fx-text-fill: #2F4F4F;
+}
+
+.tab:selected {
+ -fx-background-color: #E0E0E0;
+}
+
+.tab .content {
+ -fx-background-color: #FFFFFF;
+}
+
+.root { -fx-background-color: #F5F5F5; }
+
+.tab-pane {
+ -fx-background-color: #F5F5F5;
+ -fx-border-color: #E1E1E1;
+ -fx-border-radius: 5px;
+ -fx-border-width: 1px;
+ -fx-padding: 10px;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+ -fx-background-color: rgb(88, 150, 149);
+ -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+ -fx-border-style: solid;
+ -fx-border-width: 2px;
+ -fx-border-color: white;
+ -fx-border-radius: 5px 5px 0 0;
+ -fx-font-weight: bold;
+
+ -fx-text-fill: #2F4F4F;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+
+ -fx-background-color: #F5F5F5;
+
+ -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+
+ -fx-border-width: 2px;
+ -fx-border-color: white;
+ -fx-border-radius: 5px 5px 0 0;
+ -fx-font-size: 12pt;
+ -fx-text-fill: white;
+
+}
+
+.list-cell:odd {
+ -fx-background-color: #EAEAEA;
+}
+
+.list-cell:selected {
+ -fx-background-color: #2F4F4F;
+ -fx-text-fill: white;
+}
+
+.label {
+ font-weight: bold;
+ color: #2F4F4F;
+ font-size: 14px;
+}
+
+.text-field, .password-field {
+ border: none;
+ padding: 10px;
+ border-radius: 5px;
+ box-shadow: inset 0px 0px 5px #E1E1E1;
+ width: 100%;
+ margin-bottom: 20px;
+ font-size: 16px;
+}
+
+.button {
+ border: none;
+ padding: 10px 15px;
+ border-radius: 5px;
+ font-size: 16px;
+ font-weight: bold; cursor: pointer;
+}
+
+#guest-button {
+ background-color: #F5F5F5;
+ color: #2F4F4F;
+ margin-top: 10px;
+}
+
+#login-button {
+ background-color: #2F4F4F;
+ color: #FFFFFF;
+}
+
+.table-view {
+ background-color: white;
+ border-color: #E1E1E1;
+}
+
+.table-row-cell {
+ -fx-background-color: white;
+ -fx-border-color: #E1E1E1;
+}
+
+.table-column {
+ *-fx-font: bold 16px 'Arial';
+ -fx-text-fill: white;
+}
+
+
+

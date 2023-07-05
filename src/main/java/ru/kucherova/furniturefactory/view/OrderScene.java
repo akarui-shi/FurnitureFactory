@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.database.DataBase;
@@ -45,13 +47,20 @@ public class OrderScene {
         Text nameText = new Text(itemData.get(1));
         Text furnityreText = new Text(order.getFurniture(dataBase, item).toString().replaceAll(", ", System.lineSeparator()).replace("[", "").replace("]", ""));
 
+        dataLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        dataText.setFont(Font.font(14));
+        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        nameText.setFont(Font.font(14));
+        furnityreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        furnityreText.setFont(Font.font(14));
+
         // Устанавливаем стили для меток и текстовых полей
-        dataLabel.setStyle("-fx-font-weight: bold;");
-        dataText.setStyle("-fx-font-size: 14;");
-        nameLabel.setStyle("-fx-font-weight: bold;");
-        nameText.setStyle("-fx-font-size: 14;");
-        furnityreLabel.setStyle("-fx-font-weight: bold;");
-        furnityreText.setStyle("-fx-font-size: 14;");
+//        dataLabel.setStyle("-fx-font-weight: bold;");
+//        dataText.setStyle("-fx-font-size: 14;");
+//        nameLabel.setStyle("-fx-font-weight: bold;");
+//        nameText.setStyle("-fx-font-size: 14;");
+//        furnityreLabel.setStyle("-fx-font-weight: bold;");
+//        furnityreText.setStyle("-fx-font-size: 14;");
 
 
         // Добавляем метки и текстовые поля в контейнер

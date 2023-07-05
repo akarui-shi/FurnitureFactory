@@ -1,26 +1,24 @@
 package ru.kucherova.furniturefactory.view;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import ru.kucherova.furniturefactory.database.DataBase;
+import ru.kucherova.furniturefactory.FurnitureApp;
 import ru.kucherova.furniturefactory.model.*;
-import ru.kucherova.furniturefactory.model.Component;
-import ru.kucherova.furniturefactory.model.Order;
-import ru.kucherova.furniturefactory.model.Store;
 
+import java.sql.SQLException;
 
-import java.sql.*;
 
 public class GuestScene extends Application  { //линейки, мебель, компоненты, магазины
 
     Guest guest;
+    public GuestScene() throws SQLException {
+        this.guest = new Guest(); // Инициализация гостя по умолчанию
+    }
 
     public GuestScene(Guest guest){
         this.guest = guest;
@@ -33,6 +31,7 @@ public class GuestScene extends Application  { //линейки, мебель, �
         VBox root = new VBox();
         root.setPadding(new Insets(10));
         root.setSpacing(10);
+        root.setStyle("-fx-background-color: #F5F5F5;"); // Фоновый цвет контейнера
 
         // Создаем TabPane для переключения между списками
         TabPane tabPane = new TabPane();
@@ -50,8 +49,9 @@ public class GuestScene extends Application  { //линейки, мебель, �
 
         root.getChildren().addAll(tabPane);
 
-        Scene scene = new Scene(root, 800, 600);
-        scene.getStylesheets().add(String.valueOf(Guest.class.getResource("furniture.css"))); //получение стиля
+        Scene scene = new Scene(root, 800, 500);
+
+        scene.getStylesheets().add(String.valueOf(FurnitureApp.class.getResource("furniture.css"))); //получение стиля
         primaryStage.setScene(scene);
         primaryStage.setTitle("Furniture Factory");
         //primaryStage.setScene(new Scene(root, 800, 600));

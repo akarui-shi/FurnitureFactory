@@ -4,8 +4,6 @@ module ru.kucherova.furniturefactory {
     requires java.sql;
     requires mysql.connector.java;
     requires org.controlsfx.controls;
-    //requires org.kordamp.bootstrapfx.core;
-
 
     opens ru.kucherova.furniturefactory to javafx.fxml;
     exports ru.kucherova.furniturefactory.model;
@@ -13,4 +11,6 @@ module ru.kucherova.furniturefactory {
     exports ru.kucherova.furniturefactory.view;
     exports ru.kucherova.furniturefactory.database;
     exports ru.kucherova.furniturefactory;
+    opens ru.kucherova.furniturefactory.controller to javafx.fxml;
+    opens ru.kucherova.furniturefactory.view to javafx.fxml;
 }

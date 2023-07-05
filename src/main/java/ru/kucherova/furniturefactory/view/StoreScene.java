@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.database.DataBase;
@@ -44,10 +46,11 @@ public class StoreScene {
         //Text  furnitureText = new Text(store.getFromFurniture());
 
         // Устанавливаем стили для меток и текстовых полей
-        nameLabel.setStyle("-fx-font-weight: bold;");
-        nameText.setStyle("-fx-font-size: 14;");
-        faxLabel.setStyle("-fx-font-weight: bold;");
-        faxText.setStyle("-fx-font-size: 14;");
+        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        nameText.setFont(Font.font(14));
+        faxLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        faxText.setFont(Font.font(14));
+
 
         // Добавляем метки и текстовые поля в контейнер
         container.getChildren().addAll(nameLabel, nameText, faxLabel, faxText);
