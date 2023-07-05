@@ -10,12 +10,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.FurnitureApp;
 import ru.kucherova.furniturefactory.model.Admin;
-import ru.kucherova.furniturefactory.model.Guest;
 
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AdminScene extends Application { //линейки, мебель, компоненты, магазины, все заказы
+public class AdminScene extends Application {
     public Admin admin;
     public Button addOrderButton;
     public Button addLineButton;
@@ -35,12 +34,10 @@ public class AdminScene extends Application { //линейки, мебель, к
 
     @Override
     public void start(Stage primaryStage) {
-        // Создаем графический интерфейс
         AtomicReference<VBox> root = new AtomicReference<>(new VBox());
         root.get().setPadding(new Insets(10));
         root.get().setSpacing(10);
 
-        // Создаем TabPane для переключения между списками
         TabPane tabPane = new TabPane();
 
         Tab lineTab = new Tab("Линии", admin.lineList);
@@ -51,8 +48,7 @@ public class AdminScene extends Application { //линейки, мебель, к
 
         addLineButton = new Button("Добавить новую линию");
         addLineButton.setOnAction(event -> {
-            // Обработчик нажатия кнопки "Добавить новую линию"
-            Stage dialog = new Stage(); // Создаем диалоговое окно
+            Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(primaryStage);
             VBox dialogVBox = new VBox();
@@ -66,25 +62,24 @@ public class AdminScene extends Application { //линейки, мебель, к
                 // Обработчик нажатия кнопки "Добавить"
                 String name = newLineName.getText();
                 try {
-                    admin.addLine(name); // Добавляем новую линию в базу данных
+                    admin.addLine(name);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                //admin.saveData(); // Сохраняем изменения
                 try {
-                    admin.refreshLineList(); // Обновляем таблицу
+                    admin.refreshLineList();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                dialog.close(); // Закрываем диалоговое окно
+                dialog.close();
             });
             Button cancelButton = new Button("Отмена");
-            cancelButton.setOnAction(cancelEvent -> dialog.close()); // Обработчик нажатия кнопки "Отмена"
+            cancelButton.setOnAction(cancelEvent -> dialog.close());
             dialogHBox.getChildren().addAll(addButton, cancelButton);
             dialogVBox.getChildren().addAll(newLineLabel, newLineName, dialogHBox);
             Scene dialogScene = new Scene(dialogVBox);
             dialog.setScene(dialogScene);
-            dialog.showAndWait(); // Отображаем диалоговое окно и ждем, пока пользователь закроет его
+            dialog.showAndWait();
         });
         lineTab.setContent(new VBox(admin.lineList, addLineButton));
 
@@ -128,7 +123,7 @@ public class AdminScene extends Application { //линейки, мебель, к
         admin.shopList.setContextMenu(StoreMenu);
 
         Scene scene = new Scene(root.get(), 800, 500);
-        scene.getStylesheets().add(String.valueOf(FurnitureApp.class.getResource("furniture.css"))); //получение стиля
+        scene.getStylesheets().add(String.valueOf(FurnitureApp.class.getResource("furniture.css")));
         primaryStage.setScene(scene);
         primaryStage.setTitle("Furniture Factory");
         primaryStage.setResizable(false);

@@ -112,8 +112,6 @@ public class Order {
             data.add(name);
         }
 
-        System.out.println(data);
-
         resultSet.close();
         statement.close();
 
@@ -143,8 +141,6 @@ public class Order {
             data.add(name);
         }
 
-        System.out.println(data);
-
         resultSet.close();
         statement.close();
 
@@ -172,8 +168,6 @@ public class Order {
             String date = resultSet.getString("type");
             data.add(date);
         }
-
-        System.out.println(data);
 
         resultSet.close();
         statement.close();

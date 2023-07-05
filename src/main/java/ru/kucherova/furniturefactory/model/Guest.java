@@ -18,7 +18,6 @@ public class Guest {
     public Guest() throws SQLException {
         dataBase = new DataBase();
 
-        // Создаем списки элементов
         furnitureList = new ListView<>();
         Furniture furniture = new Furniture(dataBase);
         ObservableList<String> furnitureItems = FXCollections.observableArrayList(

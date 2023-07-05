@@ -14,9 +14,7 @@ public class Client {
     DataBase dataBase;
     public String login;
     public String password;
-
     Order order;
-
     public ListView<String> furnitureList;
     public ListView<String> componentList;
     public ListView<String> lineList;
@@ -27,7 +25,6 @@ public class Client {
         this.login = login;
         this.password = password;
 
-        // Создаем списки элементов
         furnitureList = new ListView<>();
         Furniture furniture = new Furniture(dataBase);
         ObservableList<String> furnitureItems = FXCollections.observableArrayList(
@@ -60,15 +57,13 @@ public class Client {
     }
 
      private boolean checkCredentials(String login, String password) {
-        // Проверяем, есть ли пользователь с заданным логином в базе данных
-        String query = "SELECT COUNT(*) FROM `User` WHERE username = \""+ login + "\";" ;  //\""+ login + "\";
+        String query = "SELECT COUNT(*) FROM `User` WHERE username = \""+ login + "\";" ;
         try (PreparedStatement statement = dataBase.connection.prepareStatement(query)) {
-            //statement.setString(1, login);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     int count = resultSet.getInt(1);
                     if (count == 0) {
-                        return false; // Пользователь не найден
+                        return false;
                     }
                 }
             }
@@ -76,15 +71,13 @@ public class Client {
             throw new RuntimeException(e);
         }
 
-        // Проверяем, совпадает ли пароль с хранящимся в базе данных
         String passwordQuery = "SELECT password_hash FROM `User` WHERE username = \""+ login + "\";";
         try (PreparedStatement passwordStatement = dataBase.connection.prepareStatement(passwordQuery)) {
-            //passwordStatement.setString(1, login);
             try (ResultSet passwordResultSet = passwordStatement.executeQuery()) {
                 if (passwordResultSet.next()) {
                     String storedPassword = passwordResultSet.getString("password_hash");
                     if (password.equals(storedPassword)) {
-                        return true; // Логин и пароль совпадают
+                        return true;
                     }
                 }
             }
@@ -108,12 +101,9 @@ public class Client {
         while (rs.next()) {
             lineId = rs.getInt("id");
         }
-
         rs.close();
         stmt.close();
-
         lineId+=1;
-        System.out.println(lineId);
 
         String query = "INSERT INTO `User` (id, username, password_hash)" +
                 "VALUES (" + lineId + ", \"" + login + "\", \"" + password + "\"); ";
@@ -131,7 +121,6 @@ public class Client {
 
     public int getId() throws SQLException {
         Statement statement = dataBase.connection.createStatement();
-
         String query = "SELECT id FROM User " +
                 "WHERE username = \"" + login + "\" AND password_hash = \"" + password + "\";";
         int id = 0;

@@ -103,14 +103,6 @@ public class AdminController  {
             alert.getButtonTypes().setAll(deleteButton, cancelButton);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == deleteButton) {
-                //Furniture furnitureToDelete = new Furniture(dataBase, selectedItem);
-//                try {
-//                    furnitureToDelete.delete();
-//                    refreshFurnitureList();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-                System.out.println("ахуеть");
             }
         });
 
@@ -124,14 +116,6 @@ public class AdminController  {
             alert.getButtonTypes().setAll(deleteButton, cancelButton);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == deleteButton) {
-                //Furniture furnitureToDelete = new Furniture(dataBase, selectedItem);
-//                try {
-//                    furnitureToDelete.delete();
-//                    refreshFurnitureList();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-                System.out.println("ахуеть");
             }
         });
 
@@ -145,14 +129,6 @@ public class AdminController  {
             alert.getButtonTypes().setAll(deleteButton, cancelButton);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == deleteButton) {
-                //Furniture furnitureToDelete = new Furniture(dataBase, selectedItem);
-//                try {
-//                    furnitureToDelete.delete();
-//                    refreshFurnitureList();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-                System.out.println("ахуеть");
             }
         });
 
@@ -166,14 +142,6 @@ public class AdminController  {
             alert.getButtonTypes().setAll(deleteButton, cancelButton);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == deleteButton) {
-                //Furniture furnitureToDelete = new Furniture(dataBase, selectedItem);
-//                try {
-//                    furnitureToDelete.delete();
-//                    refreshFurnitureList();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-                System.out.println("ахуеть");
             }
         });
 
@@ -182,8 +150,6 @@ public class AdminController  {
 
     private void showAddOrderDialog() {
         try {
-
-            // Создание диалогового окна для создания нового заказа
             Stage dialog = new Stage();
 
             BorderPane root = new BorderPane();
@@ -195,7 +161,6 @@ public class AdminController  {
             BorderPane.setMargin(title, new Insets(20));
             root.setTop(title);
 
-            // Получение списка мебели для выбора
             ListView<CheckBox> furnitureCheckBoxList = new ListView<>();
             ObservableList<CheckBox> checkBoxList = furnitureCheckBoxList.getItems();
 
@@ -220,11 +185,9 @@ public class AdminController  {
             checkboxBox.setSpacing(10);
             root.setCenter(checkboxBox);
 
-            // Создание кнопки для добавления заказа в базу данных
             Button addButton = new Button("Добавить заказ");
             addButton.setOnAction(event -> {
                 try {
-                    // Получение выбранных пользователем предметов мебели
                     ObservableList<CheckBox> checkedItems = furnitureCheckBoxList.getItems();
                     StringBuilder furnitureIds = new StringBuilder();
 
@@ -248,8 +211,7 @@ public class AdminController  {
                     stmt3.close();
 
                     orderId +=1;
-                    System.out.println(orderId);
-                    // Создание нового заказа
+
                     PreparedStatement stmt2 = admin.getDataBase().connection.prepareStatement("INSERT INTO `Order` (id , date, store_id, name, user_id) VALUES (?, ? , ?, CONCAT('TP1-', FLOOR(RAND()*8999+1000)) , ?)");
                     stmt2.setInt(1, orderId);
                     stmt2.setDate(2, new Date(System.currentTimeMillis()));
@@ -259,7 +221,6 @@ public class AdminController  {
                     stmt2.executeUpdate();
                     stmt2.close();
 
-                    // Добавление мебели в заказ
                     String[] furnitureIdList = furnitureIds.toString().split(",");
                     for (String furnitureId : furnitureIdList) {
                         PreparedStatement stmt4 = admin.getDataBase().connection.prepareStatement("INSERT INTO OrderFurniture (order_id, furniture_id, quantity) VALUES (?, ?, ?)");
@@ -270,10 +231,8 @@ public class AdminController  {
                         stmt4.close();
                     }
 
-                    // Обновление списка заказов
                     adminScene.admin.refreshOrderList();
 
-                    // Закрытие диалогового окна
                     dialog.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -284,7 +243,6 @@ public class AdminController  {
             BorderPane.setAlignment(addButton, Pos.CENTER);
             BorderPane.setMargin(addButton, new Insets(20));
 
-            // Отображение диалогового окна
             dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();

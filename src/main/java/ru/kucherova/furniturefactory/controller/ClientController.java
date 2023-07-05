@@ -100,7 +100,6 @@ public class ClientController  {
     private void showAddOrderDialog() {
         try {
 
-            // Создание диалогового окна для создания нового заказа
             Stage dialog = new Stage();
 
             BorderPane root = new BorderPane();
@@ -112,7 +111,6 @@ public class ClientController  {
             BorderPane.setMargin(title, new Insets(20));
             root.setTop(title);
 
-            // Получение списка мебели для выбора
             ListView<CheckBox> furnitureCheckBoxList = new ListView<>();
             ObservableList<CheckBox> checkBoxList = furnitureCheckBoxList.getItems();
 
@@ -137,11 +135,9 @@ public class ClientController  {
             checkboxBox.setSpacing(10);
             root.setCenter(checkboxBox);
 
-            // Создание кнопки для добавления заказа в базу данных
             Button addButton = new Button("Добавить заказ");
             addButton.setOnAction(event -> {
                 try {
-                    // Получение выбранных пользователем предметов мебели
                     ObservableList<CheckBox> checkedItems = furnitureCheckBoxList.getItems();
                     StringBuilder furnitureIds = new StringBuilder();
 
@@ -165,8 +161,7 @@ public class ClientController  {
                     stmt3.close();
 
                     orderId +=1;
-                    System.out.println(orderId);
-                    // Создание нового заказа
+
                     PreparedStatement stmt2 = client.getDataBase().connection.prepareStatement("INSERT INTO `Order` (id , date, store_id, name, user_id) VALUES (?, ? , ?, CONCAT('TP1-', FLOOR(RAND()*8999+1000)) , ?)");
                     Random rand = new Random();
                     int number = rand.nextInt(10) + 1;
@@ -178,7 +173,6 @@ public class ClientController  {
                     stmt2.executeUpdate();
                     stmt2.close();
 
-                    // Добавление мебели в заказ
                     String[] furnitureIdList = furnitureIds.toString().split(",");
                     for (String furnitureId : furnitureIdList) {
                         PreparedStatement stmt4 = client.getDataBase().connection.prepareStatement("INSERT INTO OrderFurniture (order_id, furniture_id, quantity) VALUES (?, ?, ?)");
@@ -189,11 +183,9 @@ public class ClientController  {
                         stmt4.close();
                     }
 
-                    // Обновление списка заказов
                     clientScene.client.refreshOrderList();
-
-                    // Закрытие диалогового окна
                     dialog.close();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -203,7 +195,6 @@ public class ClientController  {
             BorderPane.setAlignment(addButton, Pos.CENTER);
             BorderPane.setMargin(addButton, new Insets(20));
 
-            // Отображение диалогового окна
             dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
@@ -218,14 +209,12 @@ public class ClientController  {
         ButtonType changeButton = new ButtonType("Изменить", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(changeButton, ButtonType.CANCEL);
 
-        // Создаем текстовые поля для отображения данных пользователя
         TextField loginField = new TextField(client.login);
         loginField.setEditable(false);
         PasswordField passwordField = new PasswordField();
         passwordField.setText(client.password);
         passwordField.setEditable(false);
 
-        // Создаем кнопку "Изменить"
         Button changePasswordButton = new Button("Изменить пароль");
         changePasswordButton.setOnAction(e -> {
             passwordField.setEditable(true);
@@ -250,19 +239,8 @@ public class ClientController  {
             return null;
         });
 
-        // При закрытии диалога сохраняем изменения
         dialog.setOnCloseRequest(e -> {
             Client updatedUser = dialog.getResult();
-            System.out.println("ВАУ");
-//            if (updatedUser != null) {
-//                try {
-//                    currentUser.setPassword(updatedUser.getPassword());
-//                    // Сохраняем изменения в базе данных
-//                    currentUser.update();
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
         });
 
         dialog.showAndWait();

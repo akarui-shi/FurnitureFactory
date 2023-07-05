@@ -10,13 +10,8 @@ import java.util.Set;
 
 public class Furniture {
     private DataBase dataBase;
-
-
     public Furniture( DataBase dataBase) {
         this.dataBase = dataBase;
-    }
-
-    public void add(int line_id, String type, String article, double price){
     }
 
     public List<String> getAll() throws SQLException {
@@ -33,14 +28,12 @@ public class Furniture {
 
         return furnitureItems;
     }
-
     public List<String> getFromComponent(String component) throws SQLException {
         Statement statement = dataBase.connection.createStatement();
         String furnitureQuery = "SELECT f.type FROM Furniture f " +
                 "JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
                 "JOIN Component c ON fc.component_id = c.id " +
                 "WHERE c.type = "+ component + ";";
-
 
         ResultSet furnitureResult = statement.executeQuery(furnitureQuery);
         List<String> furnitureItems = new ArrayList<>();
@@ -99,15 +92,10 @@ public class Furniture {
         data.add(component);
         data.add(line);
         data.add(shop);
-        System.out.println(data);
 
         resultSet.close();
         statement.close();
 
         return data;
     }
-
-
-
-
 }

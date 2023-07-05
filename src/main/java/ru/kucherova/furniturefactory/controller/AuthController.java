@@ -33,7 +33,7 @@ public class AuthController {
                 throw new RuntimeException(e);
             }
             GuestController guestController = new GuestController(guest, guestScene);
-            // Закрываем окно авторизации
+
             authScene.mainWindow.close();
         });
 
@@ -64,20 +64,17 @@ public class AuthController {
                     AdminController adminController = new AdminController(admin, adminScene);
 
                     authScene.mainWindow.close();
-                }else System.out.println("Не получилось");
+                }else System.out.println("Ошибка добавлния");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
 
         authScene.registrationButton.setOnAction(event -> {
-            // Место для проверки корректности введенных данных, и сохранения нового пользователя в базе данных
             String username = authScene.newLoginField.getText();
             String password = authScene.newPasswordField.getText();
 
-            // Проверка корректности введенных данных
             if (username.isEmpty() || password.isEmpty()) {
-                // Вывод сообщения об ошибке
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Ошибка регистрации");
                 alert.setHeaderText(null);
@@ -87,20 +84,15 @@ public class AuthController {
             }
 
             try {
-                // Создание нового пользователя
                 Client newClient = new Client(username, password);
-
-                // Сохранение нового пользователя в базе данных
                 newClient.save();
 
-                // Вывод сообщения об успешной регистрации
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Регистрация");
                 alert.setHeaderText(null);
                 alert.setContentText("Пользователь успешно зарегистрирован");
                 alert.showAndWait();
 
-                // Очистка полей ввода
                 authScene.newLoginField.setText("");
                 authScene.newPasswordField.setText("");
 

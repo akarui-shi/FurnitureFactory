@@ -61,7 +61,6 @@ public class Line {
         stmt.close();
 
         lineId+=1;
-        System.out.println(lineId);
 
         String query = "INSERT INTO Line (id, name) " +
                 "VALUES (" + lineId + ", \"" + line + "\"); ";
@@ -98,8 +97,5 @@ public class Line {
 
         return data;
     }
-
-
-
 
 }

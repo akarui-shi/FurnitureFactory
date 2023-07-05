@@ -1,7 +1,6 @@
 package ru.kucherova.furniturefactory.view;
 
 import javafx.application.Application;
-
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -9,12 +8,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.FurnitureApp;
 import ru.kucherova.furniturefactory.model.Client;
-import ru.kucherova.furniturefactory.model.Guest;
 
-import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ClientScene extends Application { //линейки, мебель, компоненты, магазины
+public class ClientScene extends Application {
 
     public Client client;
     public Button addOrderButton;
@@ -28,12 +25,10 @@ public class ClientScene extends Application { //линейки, мебель, �
 
     @Override
     public void start(Stage primaryStage) {
-        // Создаем графический интерфейс
         AtomicReference<VBox> root = new AtomicReference<>(new VBox());
         root.get().setPadding(new Insets(10));
         root.get().setSpacing(10);
 
-        // Создаем TabPane для переключения между списками
         TabPane tabPane = new TabPane();
 
         Tab lineTab = new Tab("Линии", client.lineList);
@@ -50,7 +45,6 @@ public class ClientScene extends Application { //линейки, мебель, �
         tabPane.getTabs().addAll(lineTab, furnitureTab, componentTab, shopTab, orderTab);
         furnitureTab.setClosable(false);
 
-        // Создаем кнопку "Профиль"
         profileButton = new Button("Профиль");
 
         root.get().getChildren().addAll(profileButton, tabPane);
@@ -60,7 +54,6 @@ public class ClientScene extends Application { //линейки, мебель, �
         primaryStage.setScene(scene);
         primaryStage.setTitle("Furniture Factory");
         primaryStage.setResizable(false);
-        //primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
 
     }

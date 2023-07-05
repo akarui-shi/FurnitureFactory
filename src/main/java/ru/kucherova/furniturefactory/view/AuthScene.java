@@ -36,7 +36,6 @@ public class AuthScene extends Application {
         mainWindow.setTitle("Authorization");
         mainWindow.setResizable(false);
 
-        // Создаем окно авторизации на основе сетки GridPane
         GridPane loginLayout = new GridPane();
         loginLayout.setAlignment(Pos.CENTER);
         loginLayout.setHgap(10);
@@ -44,8 +43,6 @@ public class AuthScene extends Application {
         loginLayout.setPadding(new Insets(25, 25, 25, 25));
         loginLayout.setStyle("-fx-background-color: #F5F5F5;");
 
-
-        // Добавляем элементы в окно авторизации
         Label loginLabel = new Label("Login:");
         loginLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         loginLabel.setTextFill(Color.web("#2F4F4F"));
@@ -64,7 +61,6 @@ public class AuthScene extends Application {
         passwordField.setPromptText("Enter your password");
         loginLayout.add(passwordField, 1, 2);
 
-        // Создаем кнопку "Войти как гость" и добавляем в окно авторизации
         guestButton = new Button("Войти как гость");
         guestButton.setStyle("-fx-background-color: #F5F5F5; -fx-text-fill: #2F4F4F;");
         guestButton.setMaxWidth(Double.MAX_VALUE);
@@ -85,7 +81,6 @@ public class AuthScene extends Application {
         registrationLayout.setPadding(new Insets(25, 25, 25, 25));
         registrationLayout.setStyle("-fx-background-color: #F5F5F5;");
 
-        // Добавляем элементы в окно регистрации
         Label registrationLabel = new Label("Registration:");
         registrationLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         registrationLabel.setTextFill(Color.web("#2F4F4F"));
@@ -103,7 +98,6 @@ public class AuthScene extends Application {
         registrationButton.setStyle("-fx-background-color: #2F4F4F; -fx-text-fill: #FFFFFF;");
         registrationLayout.getChildren().addAll(registrationLabel, newLoginLabel, newLoginField, newPasswordLabel, newPasswordField, confirmPasswordLabel, confirmPasswordField, registrationButton);
 
-        // Создаем главное окно и добавляем на него вкладки для авторизации и регистрации
         TabPane mainLayout = new TabPane();
         mainLayout.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 

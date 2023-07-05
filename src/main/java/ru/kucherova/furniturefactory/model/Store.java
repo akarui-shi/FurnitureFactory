@@ -12,13 +12,8 @@ import java.util.List;
 public class Store {
     private DataBase dataBase;
 
-
     public Store( DataBase dataBase) {
         this.dataBase = dataBase;
-    }
-
-    public void add(int line_id, String type, String article, double price){
-
     }
 
     public List<String> getAll() throws SQLException {
@@ -62,8 +57,6 @@ public class Store {
             data.add(name);
             data.add(fax_number);
         }
-        System.out.println(data);
-
         resultSet.close();
         statement.close();
 
