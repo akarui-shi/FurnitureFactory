@@ -36,10 +36,12 @@ public class StoreScene {
         // Создаем метки для отображения данных
         Label nameLabel = new Label("Навзание: \n");
         Label faxLabel = new Label("Номер: ");
+        Label furnitureLabel = new Label("Мебель в наличии: \n");
 
         // Создаем текстовые поля для отображения данных
         Text nameText = new Text(itemData.get(0));
         Text faxText = new Text(itemData.get(1));
+        //Text  furnitureText = new Text(store.getFromFurniture());
 
         // Устанавливаем стили для меток и текстовых полей
         nameLabel.setStyle("-fx-font-weight: bold;");

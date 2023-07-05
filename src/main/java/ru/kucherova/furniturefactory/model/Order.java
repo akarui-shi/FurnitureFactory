@@ -13,6 +13,7 @@ import java.util.List;
 public class Order {
 
     Client client;
+    Admin admin;
     private DataBase dataBase;
 
 
@@ -21,22 +22,43 @@ public class Order {
         this.client = client;
     }
 
-    public List<String> getAll() throws SQLException {
+    public Order(DataBase dataBase, Admin admin) {
+        this.dataBase = dataBase;
+        this.admin = admin;
+    }
+
+    public Order(DataBase dataBase) {
+        this.dataBase = dataBase;
+    }
+
+    public List<String> getAll(String login) throws SQLException {
         Statement statement = dataBase.connection.createStatement();
 
         String componentQuery = "SELECT `Order`.*\n" +
                     "FROM `Order`\n" +
                     "JOIN `User` ON `Order`.user_id = `User`.id\n" +
-                    "WHERE `User`.username = \"" + client.login + "\";";
+                    "WHERE `User`.username = \"" + login + "\";";
         ResultSet componentResult = statement.executeQuery(componentQuery);
         List<String> componentItems = new ArrayList<>();
         while (componentResult.next()) {
             String componentName = componentResult.getString("name");
             componentItems.add(componentName);
         }
+        statement.close();
+        return componentItems;
+    }
 
+    public List<String> getAll() throws SQLException {
+        Statement statement = dataBase.connection.createStatement();
 
-
+        String componentQuery = "SELECT `Order`.*\n" +
+                "FROM `Order`;";
+        ResultSet componentResult = statement.executeQuery(componentQuery);
+        List<String> componentItems = new ArrayList<>();
+        while (componentResult.next()) {
+            String componentName = componentResult.getString("name");
+            componentItems.add(componentName);
+        }
         statement.close();
         return componentItems;
     }
@@ -74,15 +96,43 @@ public class Order {
     }
 
     public List<String> getItemDataFromDatabase(DataBase dataBase,  String type) throws SQLException {
-        System.out.println(type);
-        System.out.println(client.login);
-
         // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
         String query = "SELECT `Order`.date, Store.name\n" +
                 "FROM `Order`\n" +
                 "JOIN `User` ON `Order`.user_id = `User`.id\n" +
                 "JOIN Store ON `Order`.store_id = Store.id\n" +
                 "WHERE `Order`.name = \"" + type + "\" AND `User`.username = \"" + client.login + "\"";
+
+        //SELECT `Order`.date, Store.name FROM `Order` INNER JOIN `User` ON `Order`.user_id = `User`.id INNER JOIN Store ON `Order`.store_id = Store.id WHERE `Order`.`name` = "TP1-8309" AND `User`.`username` = "john_doe";
+
+        PreparedStatement statement = dataBase.connection.prepareStatement(query);
+        //statement.setString(1, this.toString() );
+
+        ResultSet resultSet = statement.executeQuery();
+
+        List<String> data = new ArrayList<>();
+        while (resultSet.next()) {
+            String date = resultSet.getString("date");
+            data.add(date);
+            String name = resultSet.getString("name");
+            data.add(name);
+        }
+
+        System.out.println(data);
+
+        resultSet.close();
+        statement.close();
+
+        return data;
+    }
+
+    public List<String> getItemDataFromDatabaseForAdmin(DataBase dataBase,  String type) throws SQLException {
+
+        // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
+        String query = "SELECT `Order`.date, Store.name\n" +
+                "FROM `Order`\n" +
+                "JOIN Store ON `Order`.store_id = Store.id\n" +
+                "WHERE `Order`.name = \"" + type + "\";";
 
         //SELECT `Order`.date, Store.name FROM `Order` INNER JOIN `User` ON `Order`.user_id = `User`.id INNER JOIN Store ON `Order`.store_id = Store.id WHERE `Order`.`name` = "TP1-8309" AND `User`.`username` = "john_doe";
 

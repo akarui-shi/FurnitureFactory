@@ -26,7 +26,7 @@ public class ClientScene extends Application { //линейки, мебель, �
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         // Создаем графический интерфейс
         AtomicReference<VBox> root = new AtomicReference<>(new VBox());
         root.get().setPadding(new Insets(10));
@@ -44,9 +44,6 @@ public class ClientScene extends Application { //линейки, мебель, �
         addOrderButton = new Button("Добавить новый заказ");
         orderTab.setContent(new VBox(client.orgerList, addOrderButton));
 
-
-
-
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE); // запретить закрытие вкладок
 
         tabPane.getTabs().addAll(lineTab, furnitureTab, componentTab, shopTab, orderTab);
@@ -60,11 +57,6 @@ public class ClientScene extends Application { //линейки, мебель, �
         primaryStage.setTitle("Furniture Factory");
         //primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
-
-    }
-
-    public void refreshOrderList() throws SQLException {
-        client.refreshOrderList();
 
     }
 

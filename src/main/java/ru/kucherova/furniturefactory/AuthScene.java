@@ -15,23 +15,29 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import ru.kucherova.furniturefactory.controller.AdminController;
 import ru.kucherova.furniturefactory.controller.ClientController;
 import ru.kucherova.furniturefactory.controller.GuestController;
-
+import ru.kucherova.furniturefactory.model.Admin;
+import ru.kucherova.furniturefactory.model.Auth;
 import ru.kucherova.furniturefactory.model.Client;
 import ru.kucherova.furniturefactory.model.Guest;
-
+import ru.kucherova.furniturefactory.view.AdminScene;
 import ru.kucherova.furniturefactory.view.ClientScene;
 import ru.kucherova.furniturefactory.view.GuestScene;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-public class Auth extends Application {
-
-    private Stage mainWindow;
+public class AuthScene extends Application {
+    public Stage mainWindow;
+    public Button guestButton;
+    public Button loginButton;
+    public TextField loginField;
+    public PasswordField passwordField;
+    Auth auth;
+    public AuthScene(){
+        auth = new Auth();
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -52,7 +58,7 @@ public class Auth extends Application {
         loginLabel.setTextFill(Color.web("#2F4F4F"));
         loginLayout.add(loginLabel, 0, 1);
 
-        TextField loginField = new TextField();
+        loginField = new TextField();
         loginField.setPromptText("Enter your login");
         loginLayout.add(loginField, 1, 1);
 
@@ -61,93 +67,79 @@ public class Auth extends Application {
         passwordLabel.setTextFill(Color.web("#2F4F4F"));
         loginLayout.add(passwordLabel, 0, 2);
 
-        PasswordField passwordField = new PasswordField();
+        passwordField = new PasswordField();
         passwordField.setPromptText("Enter your password");
         loginLayout.add(passwordField, 1, 2);
 
         // Создаем кнопку "Войти как гость" и добавляем в окно авторизации
-        Button guestButton = new Button("Войти как гость");
+        guestButton = new Button("Войти как гость");
         guestButton.setStyle("-fx-background-color: #F5F5F5; -fx-text-fill: #2F4F4F;");
         guestButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)  {
+            public void handle(ActionEvent event) {
                 Guest guest = null;
                 try {
                     guest = new Guest();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-
                 GuestScene guestScene = new GuestScene(guest);
                 try {
-                    guestScene.start(new Stage()); // блять
+                    guestScene.start(new Stage());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 GuestController guestController = new GuestController(guest, guestScene);
-
-
-//                try {
-//                    guest.start(new Stage());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
                 // Закрываем окно авторизации
                 mainWindow.close();
             }
         });
-
         guestButton.setMaxWidth(Double.MAX_VALUE);
         GridPane.setMargin(guestButton, new Insets(10, 0, 0, 0));
         loginLayout.add(guestButton, 1, 4);
 
-        Button loginButton = new Button("Log in");
+        loginButton = new Button("Log in");
         loginButton.setStyle("-fx-background-color: #2F4F4F; -fx-text-fill: #FFFFFF;");
+        loginButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                String login = loginField.getText();
+                String password = passwordField.getText();
+                try {
+                    if (auth.getRole(login, password).equals("Клиент")) {
+                        Client client = null;
+                        try {
+                            client = new Client(login, password);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        ClientScene clientScene = new ClientScene(client);
+                        try {
+                            clientScene.start(new Stage());
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        ClientController clientController = new ClientController(client, clientScene);
+
+                        mainWindow.close();
+                    } else if (auth.getRole(login, password).equals("Aдминистратор")){
+                        Admin admin = new Admin();
+                        AdminScene adminScene = new AdminScene(admin);
+                        adminScene.start(new Stage());
+                        AdminController adminController = new AdminController(admin, adminScene);
+
+                        mainWindow.close();
+                    }else System.out.println("Не получилось");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        });
+
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_CENTER);
         hbBtn.getChildren().add(loginButton);
         loginLayout.add(hbBtn, 1, 5);
-
-        // Добавляем обработчик событий для кнопки входа
-//        loginButton.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                // Место для проверки соответствия логина и пароля, и перехода на главную страницу при успешной авторизации
-//
-//            }
-//        });
-
-        // Добавляем обработчик событий для кнопки входа
-        loginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                // Место для проверки соответствия логина и пароля, и перехода на главную страницу при успешной авторизации
-                String login = loginField.getText();
-                String password = passwordField.getText();
-                System.out.println(login);
-                System.out.println(password);
-
-                Client client = null;
-
-                try {
-                    client = new Client(login, password);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-
-                ClientScene clientScene = new ClientScene(client);
-                try {
-                    clientScene.start(new Stage()); // блять
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                ClientController clientController = new ClientController(client, clientScene);
-
-                mainWindow.close();
-            }
-
-    });
-
-
 
         // Создаем окно регистрации на основе VBox
         VBox registrationLayout = new VBox(10);
@@ -168,10 +160,11 @@ public class Auth extends Application {
         Label confirmPasswordLabel = new Label("Confirm password:");
         PasswordField confirmPasswordField = new PasswordField();
         confirmPasswordField.setPromptText("Confirm your password");
+
         Button registrationButton = new Button("Register");
         registrationButton.setStyle("-fx-background-color: #2F4F4F; -fx-text-fill: #FFFFFF;");
 
-// Добавляем обработчик событий для кнопки регистрации
+        // Добавляем обработчик событий для кнопки регистрации
         registrationButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

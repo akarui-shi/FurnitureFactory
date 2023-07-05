@@ -19,9 +19,6 @@ public class Line {
         this.dataBase = dataBase;
     }
 
-    public void add(int line_id, String type, String article, double price){
-    }
-
     public List<String> getAll() throws SQLException {
         Statement statement = dataBase.connection.createStatement();
 
@@ -60,13 +57,32 @@ public class Line {
         return furnitureItems;
     }
 
-    public void add(String line, String type, String article, Double price) throws SQLException {
-        Statement statement = dataBase.connection.createStatement();
+    public void add(String line) throws SQLException {
+        Statement stmt = dataBase.connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS id FROM `Line`");
+        int lineId = 0;
+        while (rs.next()) {
+            lineId = rs.getInt("id");
+        }
+//        PreparedStatement statement = dataBase.connection.prepareStatement("SELECT MAX(id) AS id FROM `Line`");
+//        ResultSet resultSet = statement.executeQuery();
+//        int lineId = 0;
+//        while (resultSet.next()) {
+//            lineId = resultSet.getInt("id");
+//        }
 
-        int lineQuery =  Integer.parseInt("SELECT id FROM Line WHERE name = "+ line +";");
-        String query = "NSERT INTO Furniture (line_id, type, article, price) " +
-                "VALUES (" + lineQuery + ", " + type + ", " + article + ", " + price + "), ";
-        int rowsAffected = statement.executeUpdate(query);
+        rs.close();
+        stmt.close();
+
+        lineId+=1;
+        System.out.println(lineId);
+
+        String query = "INSERT INTO Line (id, name) " +
+                "VALUES (" + lineId + ", \"" + line + "\"); ";
+        PreparedStatement stmt2 = dataBase.connection.prepareStatement(query);
+        stmt2.executeUpdate();
+        stmt2.close();
+
     }
 
     public void delite() throws SQLException {

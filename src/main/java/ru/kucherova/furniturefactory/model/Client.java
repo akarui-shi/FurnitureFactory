@@ -25,9 +25,6 @@ public class Client {
     public ListView<String> orgerList;
     public Client(String login, String password) throws SQLException {
         dataBase = new DataBase();
-        if (checkCredentials(login, password)){
-            System.out.println("заебись");
-        } else System.out.println("хуйня");
         this.login = login;
         this.password = password;
 
@@ -59,7 +56,7 @@ public class Client {
         orgerList = new ListView<>();
         order = new Order(dataBase, this);
         ObservableList<String> orderItems = FXCollections.observableArrayList(
-                order.getAll());
+                order.getAll(login));
         orgerList.setItems(orderItems);
     }
 
@@ -101,7 +98,7 @@ public class Client {
     public void refreshOrderList() throws SQLException {
         orgerList.getItems().clear();
         ObservableList<String> orderItems = FXCollections.observableArrayList(
-                order.getAll());
+                order.getAll(login));
         orgerList.setItems(orderItems);
     }
 

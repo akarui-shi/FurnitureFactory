@@ -42,6 +42,7 @@ public class GuestScene extends Application  { //линейки, мебель, �
         Tab componentTab = new Tab("Компоненты", guest.componentList);
         Tab shopTab = new Tab("Магазины", guest.shopList);
 
+
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE); // запретить закрытие вкладок
 
         tabPane.getTabs().addAll(lineTab, furnitureTab, componentTab, shopTab);

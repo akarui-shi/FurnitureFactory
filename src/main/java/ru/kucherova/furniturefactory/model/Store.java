@@ -35,23 +35,23 @@ public class Store {
         return componentItems;
     }
 
-    public List<String> getFromComponent(String furniture) throws SQLException {
-        Statement statement = dataBase.connection.createStatement();
-        String componentQuery = "SELECT c.type, c.cost, fc.quantity " +
-                "FROM Furniture f JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
-                "JOIN Component c ON fc.component_id = c.id " +
-                "WHERE f.type = " + furniture + ";";
-
-        ResultSet componentResult = statement.executeQuery(componentQuery);
-        List<String> furnitureItems = new ArrayList<>();
-        while (componentResult.next()) {
-            String furnitureName = componentResult.getString("type");
-            furnitureItems.add(furnitureName);
-        }
-        statement.close();
-
-        return furnitureItems;
-    }
+//    public List<String> getFromFurniture(String store) throws SQLException {
+//        Statement statement = dataBase.connection.createStatement();
+//        String componentQuery = "SELECT c.type, c.cost, fc.quantity " +
+//                "FROM Furniture f JOIN FurnitureComponent fc ON f.id = fc.furniture_id " +
+//                "JOIN Component c ON fc.component_id = c.id " +
+//                "WHERE f.type = " + furniture + ";";
+//
+//        ResultSet componentResult = statement.executeQuery(componentQuery);
+//        List<String> furnitureItems = new ArrayList<>();
+//        while (componentResult.next()) {
+//            String furnitureName = componentResult.getString("type");
+//            furnitureItems.add(furnitureName);
+//        }
+//        statement.close();
+//
+//        return furnitureItems;
+//    }
 
     public void add(String type, Double cost) throws SQLException {
         Statement statement = dataBase.connection.createStatement();
@@ -67,12 +67,9 @@ public class Store {
     }
 
     public List<String> getItemDataFromDatabase(DataBase dataBase,  String type) throws SQLException {
-
-        // Запрос для получения компонентов, линии, заказов и магазинов для заданного предмета мебели
         String query = "SELECT name, fax_number FROM Store WHERE address = \"" + type + "\"";
 
         PreparedStatement statement = dataBase.connection.prepareStatement(query);
-        //statement.setString(1, this.toString() );
 
         ResultSet resultSet = statement.executeQuery();
 
@@ -83,7 +80,6 @@ public class Store {
             data.add(name);
             data.add(fax_number);
         }
-
         System.out.println(data);
 
         resultSet.close();

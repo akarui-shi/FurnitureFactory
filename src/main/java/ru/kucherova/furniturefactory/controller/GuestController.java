@@ -6,7 +6,6 @@ import ru.kucherova.furniturefactory.view.*;
 import java.sql.SQLException;
 
 public class GuestController {
-
     Guest guest;
     GuestScene guestScene;
     FurnitureScene furnitureScene;

@@ -1,10 +1,8 @@
 package ru.kucherova.furniturefactory.controller;
 
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -16,21 +14,16 @@ import javafx.stage.Stage;
 import ru.kucherova.furniturefactory.model.*;
 import ru.kucherova.furniturefactory.view.*;
 
-import java.io.IOException;
 import java.sql.*;
 
 public class ClientController  {
-
     Client client;
     ClientScene clientScene;
     FurnitureScene furnitureScene;
     ComponentScene componentScene;
-
     LineScene lineScene;
     StoreScene storeScene;
-
     OrderScene orderScene;
-
 
     public ClientController(Client client, ClientScene clientScene){
         this.client = client;
